@@ -9,7 +9,7 @@ const port = 3001;
 //db connection
 connection();
 app.get('/', (req, res) => {
-    res.send('Welcome Home')
+    res.send('Welcome to The Curious Footwear')
 })
 
 app.listen(port, () => {
