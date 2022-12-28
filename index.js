@@ -6,6 +6,7 @@ const app = express();
 const connection = require("./models/index");
 const port = 3001;
 const Post = require("./routes/posts");
+const User = require("./routes/users");
 
 //db connection
 connection();
@@ -18,7 +19,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
 
-app.use("/api", [Post]);
+app.use("/api", [Post, User]);
+// app.use("/api", [User]);
 
 app.listen(port, () => {
   console.log(`Connected with port ${port}`);
