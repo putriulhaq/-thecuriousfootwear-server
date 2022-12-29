@@ -1,12 +1,12 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const { ConnectionStates } = require("mongoose");
+import express from "express";
+import cors  from "cors";
+import bodyParser from "body-parser";
+import ConnectionStates from "mongoose";
 const app = express();
-const connection = require("./models/index");
+import connection from "./models/index.js";
 const port = 3001;
-const Post = require("./routes/posts");
-const User = require("./routes/users");
+import Post from "./routes/posts.js";
+import Auth from "./routes/auth.js";
 
 //db connection
 connection();
@@ -19,7 +19,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
 
-app.use("/api", [Post, User]);
+app.use("/api/post", Post);
+app.use("/api/auth", Auth);
 // app.use("/api", [User]);
 
 app.listen(port, () => {

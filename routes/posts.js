@@ -1,6 +1,7 @@
-const express = require("express");
+import express from "express";
 const Post = express.Router();
-const Posts = require("../models/post");
+import Posts from "../models/post.js";
+import {authMiddleware} from '../middleware/authMiddleware.js'
 
 Post.post("/posts", async (req, res) => {
   try {
@@ -23,7 +24,7 @@ Post.post("/posts", async (req, res) => {
   }
 });
 
-Post.get("/posts", async (req, res) => {
+Post.get("/posts", authMiddleware, async(req, res) => {
   const dataPosts = await Posts.find();
   const allPosts = dataPosts.map((data) => {
     return {
@@ -88,4 +89,5 @@ Post.delete("/posts/:id", async (req, res) => {
     }
   });
 
-module.exports = Post;
+// module.exports = Post;
+export default Post;
