@@ -43,7 +43,17 @@ Post.get("/all", async (req, res) => {
   res.send(allPosts);
 });
 
-Post.put("/post/edit/:id", async (req, res) => {
+Post.get("/:id", async (req, res) => {
+  try {
+    let posts;
+    posts = await Posts.findById(req.params.id);
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+Post.put("/edit/:id", async (req, res) => {
   const { id } = req.params;
   const myquery = { userId: id };
   const updateData = {
@@ -71,7 +81,7 @@ Post.put("/post/edit/:id", async (req, res) => {
   return res.status(200).json(updateData.$set);
 });
 
-Post.delete("/posts/:id", async (req, res) => {
+Post.delete("/:id", async (req, res) => {
   try {
     const post = await Posts.findById(req.params.id);
     if (post.userId === req.body.userId) {
