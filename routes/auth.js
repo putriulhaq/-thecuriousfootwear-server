@@ -26,15 +26,27 @@ User.post("/signup", async (req, res) => {
       } else {
         bcrypt.hash(req.body.password, 10, (err, resulthash) => {
           newData.password = resulthash;
-          Users.create(newData)
-            .then((user) => {
-              res.status(200).json({
-                message: `${newData.username} registered successfully`,
-              });
+
+          const generateToken = (id) => {
+            return jwt.sign({ id }, process.env.JWTSECRETKEY, {
+              expiresIn: '30d',
             })
-            .catch((err) => {
-              res.send(err);
-            });
+          }
+
+          const user = Users.create(newData)
+          if (user) {
+            res.status(201).json({
+              first_name: newData.first_name,
+              last_name: newData.last_name,
+              username: newData.username,
+              email: newData.email,
+              phone_number: newData.phone_number,
+              token: generateToken(user._id),
+            })
+          } else {
+            res.status(400)
+            throw new Error('Invalid user data')
+          }
         });
       }
     })
