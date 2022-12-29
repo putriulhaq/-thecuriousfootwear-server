@@ -17,7 +17,9 @@ app.get("/", (req, res) => {
 //middleware
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "*"
+}));
 
 app.use("/api/post", Post);
 app.use("/api/auth", Auth);
