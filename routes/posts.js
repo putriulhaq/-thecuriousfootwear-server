@@ -3,7 +3,7 @@ const Post = express.Router();
 import Posts from "../models/post.js";
 import { authMiddleware } from '../middleware/authMiddleware.js'
 
-Post.post("/posts", async (req, res) => {
+Post.post("/", async (req, res) => {
   try {
     const newPost = Posts.create({
       title: req.body.title,
@@ -24,7 +24,7 @@ Post.post("/posts", async (req, res) => {
   }
 });
 
-Post.get("/posts", async (req, res) => {
+Post.get("/all", async (req, res) => {
   const dataPosts = await Posts.find();
   const allPosts = dataPosts.map((data) => {
     return {

@@ -11,7 +11,7 @@ import Auth from "./routes/auth.js";
 //db connection
 connection();
 app.get("/", (req, res) => {
-  res.send("Welcome to The Curious Footwear");
+  res.send("Welcome to The Curious Footwear APIs!");
 });
 
 //middleware
