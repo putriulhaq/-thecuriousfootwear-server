@@ -1,7 +1,7 @@
 import express from "express";
 const Post = express.Router();
 import Posts from "../models/post.js";
-import {authMiddleware} from '../middleware/authMiddleware.js'
+import { authMiddleware } from '../middleware/authMiddleware.js'
 
 Post.post("/posts", async (req, res) => {
   try {
@@ -24,7 +24,7 @@ Post.post("/posts", async (req, res) => {
   }
 });
 
-Post.get("/posts", authMiddleware, async(req, res) => {
+Post.get("/posts", async (req, res) => {
   const dataPosts = await Posts.find();
   const allPosts = dataPosts.map((data) => {
     return {
@@ -72,22 +72,22 @@ Post.put("/post/edit/:id", async (req, res) => {
 });
 
 Post.delete("/posts/:id", async (req, res) => {
-    try {
-      const post = await Posts.findById(req.params.id);
-      if (post.userId === req.body.userId) {
-        try {
-          await post.delete();
-          res.status(200).json("Post has been deleted");
-        } catch (err) {
-          res.status(500).json(err);
-        }
-      } else {
-        res.status(401).json("You can delete only your post!");
+  try {
+    const post = await Posts.findById(req.params.id);
+    if (post.userId === req.body.userId) {
+      try {
+        await post.delete();
+        res.status(200).json("Post has been deleted");
+      } catch (err) {
+        res.status(500).json(err);
       }
-    } catch (err) {
-      res.status(500).json(err);
+    } else {
+      res.status(401).json("You can delete only your post!");
     }
-  });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // module.exports = Post;
 export default Post;
