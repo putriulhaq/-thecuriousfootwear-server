@@ -7,7 +7,7 @@ Post.post("/", async (req, res) => {
   try {
     const newPost = Posts.create({
       title: req.body.title,
-      description: req.body.title,
+      description: req.body.description,
       image: req.body.image,
       original_price: req.body.original_price,
       price: req.body.price,
