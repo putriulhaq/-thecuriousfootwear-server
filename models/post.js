@@ -11,7 +11,7 @@ const PostSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    // required: true,
+    required: true,
   },
   userId:{
       type: String,
@@ -38,8 +38,16 @@ const PostSchema = new mongoose.Schema({
   dislike: {
     type: [String],
   },
-  categoryId: {
+  category: {
     type: String,
+    required: true,
+  },
+  brand: {
+    type: String,
+    required: true,
+  },
+  purchase_date: {
+    type: Date,
     required: true,
   },
 });

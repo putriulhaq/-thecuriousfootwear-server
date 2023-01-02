@@ -3,9 +3,11 @@ const Post = express.Router();
 import Posts from "../models/post.js";
 import { authMiddleware } from '../middleware/authMiddleware.js'
 
-Post.post("/", async (req, res) => {
+Post.post("/", authMiddleware, async (req, res) => {
+  // const newPost = new Post({ userId: req.user.userId, ...req.body })
   try {
     const newPost = Posts.create({
+      userId: req.user.userId,
       title: req.body.title,
       description: req.body.description,
       image: req.body.image,
@@ -15,6 +17,9 @@ Post.post("/", async (req, res) => {
       condition: req.body.condition,
       like: req.body.like,
       dislike: req.body.dislike,
+      brand: req.body.brand,
+      category:req.body.category,
+      purchase_date:req.body.purchase_date,
     });
     return res.status(200).send({
       message: `${req.body.title} created successfully`,
@@ -29,6 +34,7 @@ Post.get("/all", async (req, res) => {
   const allPosts = dataPosts.map((data) => {
     return {
       id: data.id,
+      userId: data.userId,
       title: data.title,
       description: data.description,
       image: data.image,
@@ -38,6 +44,8 @@ Post.get("/all", async (req, res) => {
       condition: data.condition,
       like: data.like,
       dislike: data.dislike,
+      category:data.category,
+      purchase_date:data.purchase_date
     };
   });
   res.send(allPosts);
