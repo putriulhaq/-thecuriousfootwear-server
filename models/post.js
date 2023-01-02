@@ -13,10 +13,10 @@ const PostSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
-  // userId:{
-  //     type: String,
-  //     unique:true
-  // },
+  userId:{
+      type: String,
+      // unique:true
+  },
   original_price: {
     type: Number,
     required: true,
@@ -32,12 +32,16 @@ const PostSchema = new mongoose.Schema({
   condition: {
     type: String,
   },
-  like:{
-    type:[String]
+  like: {
+    type: [String],
   },
   dislike: {
-    type:[String]
+    type: [String],
+  },
+  categoryId: {
+    type: String,
+    required: true,
   },
 });
 
-export default mongoose.model('Post', PostSchema)
+export default mongoose.model("Post", PostSchema);

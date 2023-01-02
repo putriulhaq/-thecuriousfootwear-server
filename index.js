@@ -7,6 +7,8 @@ import connection from "./models/index.js";
 const port = 3001;
 import Post from "./routes/posts.js";
 import Auth from "./routes/auth.js";
+import Cat from "./routes/category.js";
+import Com from "./routes/comments.js"
 
 //db connection
 connection();
@@ -23,6 +25,9 @@ app.use(cors({
 
 app.use("/api/post", Post);
 app.use("/api/auth", Auth);
+app.use("/api/category", Cat);
+app.use("/api/comment", Com);
+
 // app.use("/api", [User]);
 
 app.listen(port, () => {
