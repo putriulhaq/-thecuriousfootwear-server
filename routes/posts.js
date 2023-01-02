@@ -107,5 +107,31 @@ Post.delete("/:id", async (req, res) => {
   }
 });
 
-// module.exports = Post;
+Post.get("/user/:user", async (req, res) => {
+  const {user} = req.params;
+    const dataPosts =  await Posts.find({userId:user})
+  try {
+    const getByuser = dataPosts.map(data => {
+      return{
+        id: data.id,
+        userId: data.userId,
+        title: data.title,
+        description: data.description,
+        image: data.image,
+        original_price: data.original_price,
+        price: data.price,
+        suggested_price: data.suggested_price,
+        condition: data.condition,
+        like: data.like,
+        dislike: data.dislike,
+        category:data.category,
+        purchase_date:data.purchase_date
+      };
+  });
+    res.status(200).json(getByuser);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 export default Post;
