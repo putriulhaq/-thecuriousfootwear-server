@@ -8,7 +8,7 @@ export const authMiddleware = (req, res, next) => {
   try {
     // Get token from header
     const realToken = req.headers.authorization.split(' ')[1]
-    jwt.verify(realToken, process.env.JWT, (err, user) => {
+    jwt.verify(realToken, process.env.JWTSECRETKEY, (err, user) => {
       if (err) return next(createError(403, 'Token is not valid!'));
       req.user = user;
       next()

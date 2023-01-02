@@ -8,7 +8,8 @@ const port = 3001;
 import Post from "./routes/posts.js";
 import Auth from "./routes/auth.js";
 import Cat from "./routes/category.js";
-import Com from "./routes/comments.js"
+import Com from "./routes/comments.js";
+import User from "./routes/users.js";
 
 //db connection
 connection();
@@ -27,6 +28,7 @@ app.use("/api/post", Post);
 app.use("/api/auth", Auth);
 app.use("/api/category", Cat);
 app.use("/api/comment", Com);
+app.use("/api/user", User);
 
 // app.use("/api", [User]);
 
