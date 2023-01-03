@@ -1,7 +1,7 @@
 import express from "express";
 const Post = express.Router();
 import Posts from "../models/post.js";
-import { authMiddleware } from '../middleware/authMiddleware.js'
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 Post.post("/", authMiddleware, async (req, res) => {
   // const newPost = new Post({ userId: req.user.userId, ...req.body })
@@ -18,8 +18,8 @@ Post.post("/", authMiddleware, async (req, res) => {
       like: req.body.like,
       dislike: req.body.dislike,
       brand: req.body.brand,
-      category:req.body.category,
-      purchase_date:req.body.purchase_date,
+      category: req.body.category,
+      purchase_date: req.body.purchase_date,
     });
     return res.status(200).send({
       message: `${req.body.title} created successfully`,
@@ -44,8 +44,8 @@ Post.get("/all", async (req, res) => {
       condition: data.condition,
       like: data.like,
       dislike: data.dislike,
-      category:data.category,
-      purchase_date:data.purchase_date
+      category: data.category,
+      purchase_date: data.purchase_date,
     };
   });
   res.send(allPosts);
@@ -61,38 +61,46 @@ Post.get("/:id", async (req, res) => {
   }
 });
 
-Post.put("/edit/:id", async (req, res) => {
+Post.put("/edit/:id", authMiddleware, async (req, res) => {
   const { id } = req.params;
-  const myquery = { userId: id };
-  const updateData = {
-    $set: {
-      title: req.body.title,
-      description: req.body.description,
-      image: req.body.image,
-      original_price: req.body.original_price,
-      price: req.body.price,
-      suggested_price: req.body.suggested_price,
-      condition: req.body.condition,
-    },
-  };
-  const data = await Posts.updateOne(
-    myquery,
-    updateData,
-    function (err, result) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(result);
+  const myquery = { _id: id };
+  const userId = req.user.userId;
+  const datapost = await Posts.findById(id);
+  console.log(userId)
+  console.log(datapost.userId)
+  if (userId == datapost.userId) {
+    const updateData = {
+      $set: {
+        title: req.body.title,
+        description: req.body.description,
+        image: req.body.image,
+        original_price: req.body.original_price,
+        price: req.body.price,
+        suggested_price: req.body.suggested_price,
+        condition: req.body.condition,
+      },
+    };
+    const data = await Posts.updateOne(
+      myquery,
+      updateData,
+      function (err, result) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(result);
+        }
       }
-    }
-  ).clone();
-  return res.status(200).json(updateData.$set);
+    ).clone();
+    return res.status(200).json(updateData.$set);
+  } else {
+    res.status(401).json("You can update only your post!");
+  }
 });
 
-Post.delete("/:id", async (req, res) => {
+Post.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const post = await Posts.findById(req.params.id);
-    if (post.userId === req.body.userId) {
+    if (post.userId == req.user.userId) {
       try {
         await post.delete();
         res.status(200).json("Post has been deleted");
@@ -108,11 +116,11 @@ Post.delete("/:id", async (req, res) => {
 });
 
 Post.get("/user/:user", async (req, res) => {
-  const {user} = req.params;
-    const dataPosts =  await Posts.find({userId:user})
+  const { user } = req.params;
+  const dataPosts = await Posts.find({ userId: user });
   try {
-    const getByuser = dataPosts.map(data => {
-      return{
+    const getByuser = dataPosts.map((data) => {
+      return {
         id: data.id,
         userId: data.userId,
         title: data.title,
@@ -124,10 +132,10 @@ Post.get("/user/:user", async (req, res) => {
         condition: data.condition,
         like: data.like,
         dislike: data.dislike,
-        category:data.category,
-        purchase_date:data.purchase_date
+        category: data.category,
+        purchase_date: data.purchase_date,
       };
-  });
+    });
     res.status(200).json(getByuser);
   } catch (err) {
     res.status(500).json(err);

@@ -39,6 +39,7 @@ User.get("/profil/:Id", async (req, res) => {
     const dataProfil = await Users.find({ userId: Id })
     const data = dataProfil.map(data => {
       return {
+        userId: data.userId,
         first_name: data.first_name,
         last_name: data.last_name,
         username: data.username,
@@ -77,7 +78,9 @@ User.put("/profil/edit/:id", async (req, res) => {
       }
     ).clone();
     console.log(data)
-    return res.status(200).json(updateData.$set);
+    return res.status(200).send({
+      message: `Updated profile successfully`
+    });
   });
 
 export default User;
