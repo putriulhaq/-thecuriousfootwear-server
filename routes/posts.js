@@ -66,8 +66,6 @@ Post.put("/edit/:id", authMiddleware, async (req, res) => {
   const myquery = { _id: id };
   const userId = req.user.userId;
   const datapost = await Posts.findById(id);
-  console.log(userId)
-  console.log(datapost.userId)
   if (userId == datapost.userId) {
     const updateData = {
       $set: {
@@ -141,5 +139,20 @@ Post.get("/user/:user", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+// Post.get("/search", async (req, res) => {
+//   const query = req.query.q;
+//   try {
+//     const postsWithQuery = await Posts.find({
+//       title: { $regex: query, $options: "i" },
+//     });
+//     res.status(200).json(postsWithQuery);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
+
+
 
 export default Post;

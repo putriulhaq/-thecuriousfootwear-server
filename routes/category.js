@@ -5,7 +5,6 @@ import Category from "../models/category.js";
 Cat.post("/", async (req, res) => {
   try {
     const data = Category.findOne({ name: req.body.name }).then((dataCat) => {
-      console.log(dataCat);
       if (dataCat) {
         return res.status(409).send({
           message: `${req.body.name} Already exist`,
