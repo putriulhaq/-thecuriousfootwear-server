@@ -13,9 +13,9 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  userId:{
-      type: String,
-      // unique:true
+  userId: {
+    type: String,
+    // unique:true
   },
   original_price: {
     type: Number,
@@ -27,18 +27,18 @@ const PostSchema = new mongoose.Schema({
   },
   suggested_price: {
     type: Number,
-    default:0
+    default: 0,
   },
   condition: {
     type: String,
   },
   like: {
     type: [String],
-    default:[],
+    default: [],
   },
   dislike: {
     type: [String],
-    default:[],
+    default: [],
   },
   category: {
     type: String,

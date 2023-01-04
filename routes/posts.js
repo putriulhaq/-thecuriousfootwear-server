@@ -4,7 +4,7 @@ import Posts from "../models/post.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 Post.post("/", authMiddleware, async (req, res) => {
-  const newPost = new Posts({ userId: req.user.userId, ...req.body })
+  const newPost = new Posts({ userId: req.user.userId, ...req.body });
   try {
     const savedPost = await newPost.save();
     res.status(200).json(savedPost);
@@ -35,6 +35,15 @@ Post.get("/all", async (req, res) => {
   res.send(allPosts);
 });
 
+Post.get("/popular", async (req, res) => {
+  try {
+    const datapost = await Posts.find().sort({ like: -1 });
+    res.status(200).json(datapost);
+  } catch (err) {
+    next(err);
+  }
+});
+
 Post.get("/:id", async (req, res) => {
   try {
     const posts = await Posts.findById(req.params.id);
@@ -51,7 +60,7 @@ Post.put("/edit/:id", authMiddleware, async (req, res) => {
   const datapost = await Posts.findById(id);
   if (userId == datapost.userId) {
     const updateData = {
-      $set: req.body
+      $set: req.body,
     };
     const data = await Posts.updateOne(
       myquery,
@@ -92,23 +101,6 @@ Post.get("/user/:user", async (req, res) => {
   const { user } = req.params;
   const dataPosts = await Posts.find({ userId: user });
   try {
-    // const getByuser = dataPosts.map((data) => {
-    //   return {
-    //     id: data.id,
-    //     userId: data.userId,
-    //     title: data.title,
-    //     description: data.description,
-    //     image: data.image,
-    //     original_price: data.original_price,
-    //     price: data.price,
-    //     suggested_price: data.suggested_price,
-    //     condition: data.condition,
-    //     like: data.like,
-    //     dislike: data.dislike,
-    //     category: data.category,
-    //     purchase_date: data.purchase_date,
-    //   };
-    // });
     res.status(200).json(dataPosts);
   } catch (err) {
     res.status(500).json(err);

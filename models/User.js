@@ -36,6 +36,13 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  follower: { 
+    type: Number,
+    default: 0 
+  },
+  followedUsers: { 
+    type: [String] 
+  },
 });
 
 userSchema.plugin(autoIncrement, { inc_field: "userId" });
