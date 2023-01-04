@@ -56,15 +56,7 @@ User.put("/profil/edit/:id", async (req, res) => {
     const { id } = req.params;
     const myquery = { userId: id };
     const updateData = {
-      $set: {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        username: req.body.username,
-        email: req.body.email,
-        phone_number: req.body.phone_number,
-        about: req.body.about,
-        image: req.body.image
-      },
+      $set:req.body
     };
     const data = await Users.updateOne(
       myquery,
@@ -77,7 +69,6 @@ User.put("/profil/edit/:id", async (req, res) => {
         }
       }
     ).clone();
-    console.log(data)
     return res.status(200).send({
       message: `Updated profile successfully`
     });
