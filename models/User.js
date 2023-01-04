@@ -31,17 +31,18 @@ const userSchema = new mongoose.Schema({
   },
   image: {
     type: String,
+    default: ""
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  follower: { 
+  follower: {
     type: Number,
-    default: 0 
+    default: 0
   },
-  followedUsers: { 
-    type: [String] 
+  followedUsers: {
+    type: [String]
   },
 });
 
