@@ -8,7 +8,7 @@ Com.get("/all", async (req, res) => {
   const dataComment = await comment.find();
   const data = dataComment.map((d) => {
     return {
-      id: data.id,
+      id: d.id,
       userId: d.userId,
       postId: d.postId,
       body: d.body,
