@@ -11,19 +11,13 @@ User.use(cors());
 
 User.post("/signup", async (req, res) => {
   const result = await userValidate.validateAsync(req.body)
-  Users.findOne({ email: result.email})
+  Users.findOne({ email: result.email })
     .then((dataUser) => {
       if (dataUser) {
         res.status(400).json({ message: `${result.email} already exist` });
       } else {
         bcrypt.hash(result.password, 10, (err, resulthash) => {
           result.password = resulthash;
-
-          const generateToken = (id) => {
-            return jwt.sign({ id }, process.env.JWTSECRETKEY, {
-              expiresIn: '30d',
-            })
-          }
 
           const user = Users.create(result)
           if (user) {
@@ -33,8 +27,7 @@ User.post("/signup", async (req, res) => {
               username: result.username,
               email: result.email,
               phone_number: result.phone_number,
-              about:result.about,
-              token: generateToken(user._id),
+              about: result.about,
             })
           } else {
             res.status(400)
@@ -56,7 +49,7 @@ User.post("/login", async (req, res) => {
           { userId: user.userId },
           process.env.JWTSECRETKEY,
           {
-            expiresIn: "1 days",
+            expiresIn: "30 days",
           }
         );
         res.json({
