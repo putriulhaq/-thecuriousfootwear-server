@@ -4,26 +4,10 @@ import Posts from "../models/post.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 Post.post("/", authMiddleware, async (req, res) => {
-  // const newPost = new Post({ userId: req.user.userId, ...req.body })
+  const newPost = new Posts({ userId: req.user.userId, ...req.body })
   try {
-    const newPost = Posts.create({
-      userId: req.user.userId,
-      title: req.body.title,
-      description: req.body.description,
-      image: req.body.image,
-      original_price: req.body.original_price,
-      price: req.body.price,
-      suggested_price: req.body.suggested_price,
-      condition: req.body.condition,
-      like: req.body.like,
-      dislike: req.body.dislike,
-      brand: req.body.brand,
-      category: req.body.category,
-      purchase_date: req.body.purchase_date,
-    });
-    return res.status(200).send({
-      message: `${req.body.title} created successfully`,
-    });
+    const savedPost = await newPost.save();
+    res.status(200).json(savedPost);
   } catch (err) {
     res.status(500).json(err);
   }
