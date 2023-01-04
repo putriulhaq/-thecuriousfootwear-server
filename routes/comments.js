@@ -97,7 +97,7 @@ Com.get("/getCommentsByPostId/:id", async (req, res) => {
   const comments = await comment.find({ postId: req.params.id });
   const data = comments.map((d) => {
     return {
-      id: data.id,
+      id: d.id,
       userId: d.userId,
       postId: d.postId,
       body: d.body,
