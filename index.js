@@ -12,6 +12,7 @@ import Com from "./routes/comments.js";
 import User from "./routes/users.js";
 
 //db connection
+ConnectionStates.set("strictQuery", false);
 connection();
 app.get("/", (req, res) => {
   res.send("Welcome to The Curious Footwear APIs!");

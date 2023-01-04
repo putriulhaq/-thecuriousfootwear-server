@@ -63,6 +63,15 @@ Com.put("/update/:id", authMiddleware, async (req, res) => {
   }
 });
 
+Com.get("/popular", async (req, res) => {
+  try {
+    const datacomment = await comment.find().sort({ like: -1 });
+    res.status(200).json(datacomment);
+  } catch (err) {
+    next(err);
+  }
+});
+
 Com.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const commentById = await comment
@@ -116,5 +125,6 @@ Com.get("/getCommentsByUserId", authMiddleware, async (req, res) => {
   });
   res.status(200).send(data);
 });
+
 
 export default Com;
