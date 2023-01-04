@@ -35,7 +35,7 @@ User.put("/dislike/:postId", authMiddleware, async (req, res) => {
 
 User.get("/profil/:Id", async (req, res) => {
   const { Id } = req.params;
-  const dataProfil = await Users.find({ userId: Id });
+  const dataProfil = await Users.findById({ userId: Id });
   // const data = dataProfil.map((data) => {
   //   return {
   //     userId: data.userId,
