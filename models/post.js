@@ -27,16 +27,18 @@ const PostSchema = new mongoose.Schema({
   },
   suggested_price: {
     type: Number,
-    required: true,
+    default:0
   },
   condition: {
     type: String,
   },
   like: {
     type: [String],
+    default:[],
   },
   dislike: {
     type: [String],
+    default:[],
   },
   category: {
     type: String,
