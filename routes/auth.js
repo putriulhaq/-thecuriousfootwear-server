@@ -5,27 +5,19 @@ import bcrypt from "bcrypt";
 // import { create } from "../models/post.js";
 import cors from "cors";
 import jwt from "jsonwebtoken";
+import userValidate from "./validateSchema.js";
 
 User.use(cors());
 
 User.post("/signup", async (req, res) => {
-  const newData = {
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    username: req.body.username,
-    email: req.body.email,
-    phone_number: req.body.phone_number,
-    about: req.body.about,
-    password: req.body.password,
-  };
-
-  Users.findOne({ email: req.body.email })
+  const result = await userValidate.validateAsync(req.body)
+  Users.findOne({ email: result.email})
     .then((dataUser) => {
       if (dataUser) {
-        res.status(400).json({ message: `${req.body.email} already exist` });
+        res.status(400).json({ message: `${result.email} already exist` });
       } else {
-        bcrypt.hash(req.body.password, 10, (err, resulthash) => {
-          newData.password = resulthash;
+        bcrypt.hash(result.password, 10, (err, resulthash) => {
+          result.password = resulthash;
 
           const generateToken = (id) => {
             return jwt.sign({ id }, process.env.JWTSECRETKEY, {
@@ -33,14 +25,15 @@ User.post("/signup", async (req, res) => {
             })
           }
 
-          const user = Users.create(newData)
+          const user = Users.create(result)
           if (user) {
             res.status(201).json({
-              first_name: newData.first_name,
-              last_name: newData.last_name,
-              username: newData.username,
-              email: newData.email,
-              phone_number: newData.phone_number,
+              first_name: result.first_name,
+              last_name: result.last_name,
+              username: result.username,
+              email: result.email,
+              phone_number: result.phone_number,
+              about:result.about,
               token: generateToken(user._id),
             })
           } else {
