@@ -2,6 +2,7 @@ import express from "express";
 const User = express.Router();
 import Post from "../models/post.js";
 import Users from "../models/User.js";
+import comment from "../models/comment.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 User.put("/like/:postId", authMiddleware, async (req, res) => {
@@ -97,6 +98,34 @@ User.put("/unfollow/:userId", async (req, res, next) => {
     res.status(200).json("Unfollow is successfull!");
   } catch (error) {
     next(error);
+  }
+});
+
+User.put("/likeComment/:commentId", authMiddleware, async (req, res) => {
+  const id = req.user.userId;
+  const commentId = req.params.commentId;
+  try {
+    await comment.findByIdAndUpdate(commentId, {
+      $addToSet: { like: id },
+      $pull: { dislike: id },
+    });
+    res.status(200).json("Comment has been liked");
+  } catch (err) {
+    return err;
+  }
+});
+
+User.put("/dislikeComment/:commentId", authMiddleware, async (req, res) => {
+  const id = req.user.userId;
+  const commentId = req.params.commentId;
+  try {
+    await comment.findByIdAndUpdate(commentId, {
+      $addToSet: { dislike: id },
+      $pull: { like: id },
+    });
+    res.status(200).json("Comment has been disliked");
+  } catch (err) {
+    return err;
   }
 });
 
