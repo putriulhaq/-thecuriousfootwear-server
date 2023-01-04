@@ -21,6 +21,13 @@ User.post("/signup", async (req, res) => {
 
           const user = Users.create(result)
           if (user) {
+            const token = jwt.sign(
+              { userId: user.userId },
+              process.env.JWTSECRETKEY,
+              {
+                expiresIn: "30 days",
+              }
+            );
             res.status(201).json({
               first_name: result.first_name,
               last_name: result.last_name,
@@ -28,6 +35,7 @@ User.post("/signup", async (req, res) => {
               email: result.email,
               phone_number: result.phone_number,
               about: result.about,
+              token
             })
           } else {
             res.status(400)
