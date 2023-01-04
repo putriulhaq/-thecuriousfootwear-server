@@ -6,26 +6,8 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 Post.post("/", authMiddleware, async (req, res) => {
   const newPost = new Posts({ userId: req.user.userId, ...req.body })
   try {
-<<<<<<< HEAD
-    const newPost = Posts.create({
-      userId: req.user.userId,
-      title: req.body.title,
-      description: req.body.description,
-      image: req.body.image,
-      original_price: req.body.original_price,
-      price: req.body.price,
-      condition: req.body.condition,
-      brand: req.body.brand,
-      category:req.body.category,
-      purchase_date:req.body.purchase_date,
-    });
-    return res.status(200).send({
-      message: `${req.body.title} created successfully`,
-    });
-=======
     const savedPost = await newPost.save();
     res.status(200).json(savedPost);
->>>>>>> 72459151288d5a6b434378945dc221d53d733d7a
   } catch (err) {
     res.status(500).json(err);
   }
