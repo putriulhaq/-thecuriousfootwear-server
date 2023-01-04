@@ -36,19 +36,19 @@ User.put("/dislike/:postId", authMiddleware, async (req, res) => {
 User.get("/profil/:Id", async (req, res) => {
   const { Id } = req.params;
   const dataProfil = await Users.find({ userId: Id });
-  const data = dataProfil.map((data) => {
-    return {
-      userId: data.userId,
-      first_name: data.first_name,
-      last_name: data.last_name,
-      username: data.username,
-      email: data.email,
-      phone_number: data.phone_number,
-      about: data.about,
-      image: data.image,
-    };
-  });
-  res.json(data);
+  // const data = dataProfil.map((data) => {
+  //   return {
+  //     userId: data.userId,
+  //     first_name: data.first_name,
+  //     last_name: data.last_name,
+  //     username: data.username,
+  //     email: data.email,
+  //     phone_number: data.phone_number,
+  //     about: data.about,
+  //     image: data.image,
+  //   };
+  // });
+  res.json(dataProfil);
 });
 
 User.put("/profil/edit/:id", async (req, res) => {
