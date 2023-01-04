@@ -13,7 +13,7 @@ Post.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-Post.get("/all", async (req, res) => {
+Post.get("/all", authMiddleware, async (req, res) => {
   const dataPosts = await Posts.find();
   const allPosts = dataPosts.map((data) => {
     return {
