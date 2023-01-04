@@ -15,30 +15,12 @@ Post.post("/", authMiddleware, async (req, res) => {
 
 Post.get("/all", async (req, res) => {
   const dataPosts = await Posts.find();
-  const allPosts = dataPosts.map((data) => {
-    return {
-      id: data.id,
-      userId: data.userId,
-      title: data.title,
-      description: data.description,
-      image: data.image,
-      original_price: data.original_price,
-      price: data.price,
-      suggested_price: data.suggested_price,
-      condition: data.condition,
-      like: data.like,
-      dislike: data.dislike,
-      category: data.category,
-      purchase_date: data.purchase_date,
-    };
-  });
-  res.send(allPosts);
+  res.status(200).json(dataPosts);
 });
 
 Post.get("/:id", async (req, res) => {
   try {
-    let posts;
-    posts = await Posts.findById(req.params.id);
+    const posts = await Posts.findById(req.params.id);
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
@@ -52,15 +34,7 @@ Post.put("/edit/:id", authMiddleware, async (req, res) => {
   const datapost = await Posts.findById(id);
   if (userId == datapost.userId) {
     const updateData = {
-      $set: {
-        title: req.body.title,
-        description: req.body.description,
-        image: req.body.image,
-        original_price: req.body.original_price,
-        price: req.body.price,
-        suggested_price: req.body.suggested_price,
-        condition: req.body.condition,
-      },
+      $set: req.body
     };
     const data = await Posts.updateOne(
       myquery,
@@ -124,18 +98,17 @@ Post.get("/user/:user", async (req, res) => {
   }
 });
 
-// Post.get("/search", async (req, res) => {
-//   const query = req.query.q;
-//   try {
-//     const postsWithQuery = await Posts.find({
-//       title: { $regex: query, $options: "i" },
-//     });
-//     res.status(200).json(postsWithQuery);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
+Post.get("/search", async (req, res) => {
+  const query = req.query.q;
+  try {
+    const postsWithQuery = await Posts.find({
+      title: { $regex: query, $options: "i" },
+    });
+    res.status(200).json(postsWithQuery);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 
 
