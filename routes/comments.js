@@ -2,12 +2,13 @@ import express from "express";
 const Com = express.Router();
 import comment from "../models/comment.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
-// const _ = require("lodash");
+import _ from "lodash";
 
 Com.get("/all", async (req, res) => {
   const dataComment = await comment.find();
   const data = dataComment.map((d) => {
     return {
+      id: data.id,
       userId: d.userId,
       postId: d.postId,
       body: d.body,
@@ -96,6 +97,7 @@ Com.get("/getCommentsByPostId/:id", async (req, res) => {
   const comments = await comment.find({ postId: req.params.id });
   const data = comments.map((d) => {
     return {
+      id: data.id,
       userId: d.userId,
       postId: d.postId,
       body: d.body,
@@ -113,6 +115,7 @@ Com.get("/getCommentsByUserId", authMiddleware, async (req, res) => {
   const comments = await comment.find({ userId: req.user.userId });
   const data = comments.map((d) => {
     return {
+      id: data.id,
       userId: d.userId,
       postId: d.postId,
       body: d.body,
@@ -126,5 +129,33 @@ Com.get("/getCommentsByUserId", authMiddleware, async (req, res) => {
   res.status(200).send(data);
 });
 
+Com.get("/getCommentsByMostLiked", async (req, res) => {
+  const dataComment = await comment.find();
+  let newDataComment = [];
+  dataComment.map((data, idx) => {
+    newDataComment.push({
+      id: data.id,
+      userId: data.userId,
+      postId: data.postId,
+      body: data.body,
+      suggestedPrice: data.suggestedPrice,
+      likeCount: data.like.length,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+    });
+  });
+
+  _.mixin({
+    multipleMostLiked: function (arr, key) {
+      const commentGroups = _.groupBy(arr, key);
+      const keys = _.keys(commentGroups);
+      const mostLiked = _.max(keys);
+      const mostLikedCommentGroups = commentGroups[mostLiked];
+      return _.orderBy(mostLikedCommentGroups, ["suggestedPrice"], ["desc"]);
+    },
+  });
+  const mostLikedComments = _.multipleMostLiked(newDataComment, "likeCount");
+  res.status(200).send(mostLikedComments);
+});
 
 export default Com;
