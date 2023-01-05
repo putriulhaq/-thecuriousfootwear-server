@@ -97,7 +97,7 @@ Com.get("/:id", async (req, res) => {
   try {
     const commentById = await comment
       .findOne(
-        { _id: req.params.id, userId: req.user.userId },
+        { _id: req.params.id },
         function (err, result) {
           if (err) {
             console.log("error disini", err);
