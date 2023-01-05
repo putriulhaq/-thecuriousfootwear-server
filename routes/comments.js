@@ -93,6 +93,26 @@ Com.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
+Com.get("/:id", async (req, res) => {
+  try {
+    const commentById = await comment
+      .findOne(
+        { _id: req.params.id, userId: req.user.userId },
+        function (err, result) {
+          if (err) {
+            console.log("error disini", err);
+          } else {
+            console.log("Single comment : ", result);
+          }
+        }
+      )
+      .clone();
+    res.status(200).json(commentById);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 Com.get("/getCommentsByPostId/:id", async (req, res) => {
   const comments = await comment.find({ postId: req.params.id });
   const data = comments.map((d) => {
