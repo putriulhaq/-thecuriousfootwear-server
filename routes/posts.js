@@ -13,6 +13,18 @@ Post.post("/", authMiddleware, async (req, res) => {
   }
 });
 
+Post.get("/search", async (req, res) => {
+  const query = req.query.q;
+  try {
+    const postsWithQuery = await Posts.find({
+      title: { $regex: query, $options: "i" },
+    });
+    res.status(200).json(postsWithQuery);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 Post.get("/all", async (req, res) => {
   const dataPosts = await Posts.find();
   const allPosts = dataPosts.map((data) => {
@@ -107,17 +119,7 @@ Post.get("/user/:user", async (req, res) => {
   }
 });
 
-Post.get("/search", async (req, res) => {
-  const query = req.query.q;
-  try {
-    const postsWithQuery = await Posts.find({
-      title: { $regex: query, $options: "i" },
-    });
-    res.status(200).json(postsWithQuery);
-  } catch (error) {
-    console.log(error);
-  }
-});
+
 
 
 
