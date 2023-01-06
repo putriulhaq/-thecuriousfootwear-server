@@ -1,9 +1,12 @@
 import express from "express";
+import cors from "cors";
 const User = express.Router();
 import Post from "../models/post.js";
 import Users from "../models/User.js";
 import comment from "../models/comment.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
+
+User.use(cors());
 
 User.put("/like/:postId", authMiddleware, async (req, res) => {
   const id = req.user.userId;
