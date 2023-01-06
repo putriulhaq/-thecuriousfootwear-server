@@ -1,14 +1,11 @@
 import express from "express";
-// import cors from "cors";
 const User = express.Router();
 import Post from "../models/post.js";
 import Users from "../models/User.js";
 import comment from "../models/comment.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
-// app.use(cors());
-
-User.put("/like/:postId", authMiddleware, async (req, res) => {
+User.put("/like/:postId", async (req, res) => {
   const id = req.user.userId;
   const postId = req.params.postId;
   try {
@@ -22,7 +19,7 @@ User.put("/like/:postId", authMiddleware, async (req, res) => {
   }
 });
 
-User.put("/dislike/:postId", authMiddleware, async (req, res) => {
+User.put("/dislike/:postId", async (req, res) => {
   const id = req.user.userId;
   const postId = req.params.postId;
   try {
