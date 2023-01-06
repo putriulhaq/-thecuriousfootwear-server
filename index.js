@@ -22,7 +22,8 @@ app.get("/", (req, res) => {
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors({
-  origin: "*"
+  origin: "http://localhost:3000/",
+  methods: ["GET", "POST", "PUT", "DELETE"]
 }));
 
 app.use("/api/post", Post);
