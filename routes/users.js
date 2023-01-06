@@ -13,7 +13,7 @@ User.put("/like/:postId", authMiddleware, async (req, res) => {
       $addToSet: { like: id },
       $pull: { dislike: id },
     });
-    res.status(200).json("The video has been likes");
+    res.status(200).json("The post has been liked");
   } catch (err) {
     return err;
   }
@@ -27,7 +27,7 @@ User.put("/dislike/:postId", authMiddleware, async (req, res) => {
       $addToSet: { dislike: id },
       $pull: { like: id },
     });
-    res.status(200).json("The video has been dislikes");
+    res.status(200).json("The post has been disliked");
   } catch (err) {
     return err;
   }
