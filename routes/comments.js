@@ -24,12 +24,13 @@ Com.get("/all", async (req, res) => {
 
 Com.post("/", authMiddleware, async (req, res) => {
   try {
-    const { postId, body, suggestedPrice } = req.body;
+    const { postId, body, suggestedPrice, createdAt } = req.body;
     const newComment = comment.create({
       userId: req.user.userId,
       postId,
       body,
       suggestedPrice,
+      createdAt
     });
     return res.status(200).send({ message: "Comment was added successfully" });
   } catch (err) {
