@@ -6,7 +6,9 @@ import Users from "../models/User.js";
 import comment from "../models/comment.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
-User.use(cors());
+app.use(cors({
+  origin: "*"
+}));
 
 User.put("/like/:postId", authMiddleware, async (req, res) => {
   const id = req.user.userId;
