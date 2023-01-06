@@ -24,8 +24,13 @@ const CommentSchema = new mongoose.Schema(
     dislike: {
       type: [String],
     },
-  },
-  { timestamps: true }
+    createdAt: {
+      type: Date
+    },
+    updatedAt: {
+      type: Date
+    }
+  }
 );
 
 export default mongoose.model("Comments", CommentSchema);
