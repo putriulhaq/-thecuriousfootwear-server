@@ -126,7 +126,7 @@ Com.get("/getCommentsByPostId/:id", async (req, res) => {
       price: d.suggestedPrice,
       like: d.like,
       dislike: d.dislike,
-      likeCount: d.like.length,
+      // likeCount: d.like.length,
       // dislike: d.dislike.length,
       createdAt: d.createdAt,
       updatedAt: d.updatedAt,
