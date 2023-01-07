@@ -123,7 +123,7 @@ User.put("/dislikeComment/:commentId", authMiddleware, async (req, res) => {
       $addToSet: { dislike: id },
       $pull: { like: id },
     });
-    res.status(200).json("Comment has been disliked");
+    res.status(200).json(`${id}`);
   } catch (err) {
     return err;
   }
