@@ -31,7 +31,7 @@ Com.post("/", authMiddleware, async (req, res) => {
       postId,
       body,
       suggestedPrice,
-      createdAt
+      createdAt,
     });
     return res.status(200).send({ message: "Comment was added successfully" });
   } catch (err) {
@@ -98,16 +98,13 @@ Com.delete("/:id", authMiddleware, async (req, res) => {
 Com.get("/:id", async (req, res) => {
   try {
     const commentById = await comment
-      .findOne(
-        { _id: req.params.id },
-        function (err, result) {
-          if (err) {
-            console.log("error disini", err);
-          } else {
-            console.log("Single comment : ", result);
-          }
+      .findOne({ _id: req.params.id }, function (err, result) {
+        if (err) {
+          console.log("error disini", err);
+        } else {
+          console.log("Single comment : ", result);
         }
-      )
+      })
       .clone();
     res.status(200).json(commentById);
   } catch (err) {
@@ -154,8 +151,8 @@ Com.get("/getCommentsByUserId", authMiddleware, async (req, res) => {
   res.status(200).send(data);
 });
 
-Com.get("/getCommentsByMostLiked", async (req, res) => {
-  const dataComment = await comment.find();
+Com.get("/getCommentsByMostLiked/:postId", async (req, res) => {
+  const dataComment = await comment.find({ postId: req.params.postId });
   let newDataComment = [];
   dataComment.map((data, idx) => {
     newDataComment.push({
@@ -164,8 +161,8 @@ Com.get("/getCommentsByMostLiked", async (req, res) => {
       postId: data.postId,
       body: data.body,
       suggestedPrice: data.suggestedPrice,
-      like: d.like,
-      dislike: d.dislike,
+      like: data.like,
+      dislike: data.dislike,
       likeCount: data.like.length,
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
