@@ -155,18 +155,20 @@ Com.get("/getCommentsByMostLiked/:postId", async (req, res) => {
   const dataComment = await comment.find({ postId: req.params.postId });
   let newDataComment = [];
   dataComment.map((data, idx) => {
-    newDataComment.push({
-      id: data.id,
-      userId: data.userId,
-      postId: data.postId,
-      body: data.body,
-      suggestedPrice: data.suggestedPrice,
-      like: data.like,
-      dislike: data.dislike,
-      likeCount: data.like.length,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-    });
+    if (data.suggestedPrice > 0) {
+      newDataComment.push({
+        id: data.id,
+        userId: data.userId,
+        postId: data.postId,
+        body: data.body,
+        suggestedPrice: data.suggestedPrice,
+        like: data.like,
+        dislike: data.dislike,
+        likeCount: data.like.length,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
+      });
+    }
   });
 
   _.mixin({
