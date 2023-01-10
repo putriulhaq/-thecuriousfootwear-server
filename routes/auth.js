@@ -7,12 +7,14 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import userValidate from "./validateSchema.js";
 
-app.use(cors({
-  origin: "*",
-}));
+User.use(
+  cors({
+    origin: "*",
+  })
+);
 
 User.post("/signup", async (req, res) => {
-  const result = await userValidate.validateAsync(req.body)
+  const result = await userValidate.validateAsync(req.body);
   Users.findOne({ email: result.email })
     .then((dataUser) => {
       if (dataUser) {
@@ -21,7 +23,7 @@ User.post("/signup", async (req, res) => {
         bcrypt.hash(result.password, 10, (err, resulthash) => {
           result.password = resulthash;
 
-          const user = Users.create(result)
+          const user = Users.create(result);
           if (user) {
             const token = jwt.sign(
               { userId: user.userId },
@@ -37,11 +39,11 @@ User.post("/signup", async (req, res) => {
               email: result.email,
               phone_number: result.phone_number,
               about: result.about,
-              token
-            })
+              token,
+            });
           } else {
-            res.status(400)
-            throw new Error('Invalid user data')
+            res.status(400);
+            throw new Error("Invalid user data");
           }
         });
       }
