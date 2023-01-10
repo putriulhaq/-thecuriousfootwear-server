@@ -10,6 +10,7 @@ import Auth from "./routes/auth.js";
 import Cat from "./routes/category.js";
 import Com from "./routes/comments.js";
 import User from "./routes/users.js";
+import Book from "./routes/bookmarks.js";
 
 //db connection
 ConnectionStates.set("strictQuery", false);
@@ -21,9 +22,11 @@ app.get("/", (req, res) => {
 //middleware
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(cors({
-  origin: "*",
-}));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 // app.use(cors({
 //   origin: "http://localhost:3000/",
@@ -35,6 +38,7 @@ app.use("/api/auth", Auth);
 app.use("/api/category", Cat);
 app.use("/api/comment", Com);
 app.use("/api/user", User);
+app.use("/api/bookmark", Book);
 
 // app.use("/api", [User]);
 
