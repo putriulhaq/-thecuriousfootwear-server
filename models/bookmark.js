@@ -12,9 +12,6 @@ const BookmarkSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
   },
-  updatedAt: {
-    type: Date,
-  },
 });
 
 export default mongoose.model("Bookmarks", BookmarkSchema);
