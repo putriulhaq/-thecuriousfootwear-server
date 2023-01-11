@@ -42,6 +42,7 @@ Post.get("/all", async (req, res) => {
       dislike: data.dislike,
       category: data.category,
       purchase_date: data.purchase_date,
+      view:data.view
     };
   });
   res.send(allPosts);
@@ -119,8 +120,16 @@ Post.get("/user/:user", async (req, res) => {
   }
 });
 
-
-
-
+Post.put("/view/:idPost", async (req, res, next) => {
+  try {
+    console.log(req.params.idPost)
+    await Posts.findByIdAndUpdate(req.params.idPost, {
+      $inc: { view: 1 },
+    });
+    res.status(200).json("The view has been increased.");
+  } catch (err) {
+    next(err);
+  }
+});
 
 export default Post;

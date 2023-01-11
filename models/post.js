@@ -52,6 +52,10 @@ const PostSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  view:{
+    type:Number,
+    default:0
+  },
   createdAt: {
     type: Date
   },
