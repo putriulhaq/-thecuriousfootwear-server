@@ -8,9 +8,7 @@ import jwt from "jsonwebtoken";
 import userValidate from "./validateSchema.js";
 
 User.use(
-  cors({
-    origin: "*",
-  })
+  cors()
 );
 
 User.post("/signup", async (req, res) => {
@@ -29,7 +27,7 @@ User.post("/signup", async (req, res) => {
               { userId: user.userId },
               process.env.JWTSECRETKEY,
               {
-                expiresIn: "30 days",
+                expiresIn: "1 days",
               }
             );
             res.status(201).json({
