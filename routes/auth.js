@@ -69,7 +69,8 @@ User.post("/login", async (req, res) => {
           token,
         });
       } else{
-        res.json({message : "password is incorrect"})
+        res.status(401);
+            throw new Error("Invalid password");
       } 
 
 
