@@ -68,8 +68,12 @@ User.post("/login", async (req, res) => {
           userId: user.userId,
           token,
         });
-      }
-    }
+      } else{
+        res.json({message : "password is incorrect"})
+      } 
+
+
+    } 
   });
 });
 
