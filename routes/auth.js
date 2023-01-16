@@ -7,9 +7,6 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import userValidate from "./validateSchema.js";
 
-User.use(
-  cors()
-);
 
 User.post("/signup", async (req, res) => {
   const result = await userValidate.validateAsync(req.body);
