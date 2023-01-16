@@ -70,6 +70,9 @@ User.post("/login", async (req, res) => {
       } else {
         res.status(401).json({ message: "password is incorrect" });
       }
+    } else {
+      res.status(404).json({ message: "Username doesnt exist" });
+
     }
   });
 });
