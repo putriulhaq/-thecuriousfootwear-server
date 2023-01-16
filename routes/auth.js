@@ -7,7 +7,6 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import userValidate from "./validateSchema.js";
 
-
 User.post("/signup", async (req, res) => {
   const result = await userValidate.validateAsync(req.body);
   Users.findOne({ email: result.email })
@@ -68,13 +67,10 @@ User.post("/login", async (req, res) => {
           userId: user.userId,
           token,
         });
-      } else{
-        res.status(401);
-            throw new Error("Invalid password");
-      } 
-
-
-    } 
+      } else {
+        res.status(401).json({ message: "password is incorrect" });
+      }
+    }
   });
 });
 
