@@ -34,6 +34,15 @@ Cat.get("/all", async (req, res) => {
   res.send(category);
 });
 
+Cat.get("/:id", async (req, res) => {
+  try {
+    const dataCategory = await Category.findById(req.params.id);
+    res.status(200).json(dataCategory)
+  } catch (err) {
+    res.status(500).json(err)
+  }
+});
+
 Cat.delete("/delete/:id", async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);

@@ -132,4 +132,18 @@ Post.put("/view/:idPost", async (req, res, next) => {
   }
 });
 
+Post.get("/category/:category", async (req, res) => {
+  try {
+    const cat = req.params.category
+    const postbycategory = await Posts.find({category: cat});
+    if(postbycategory > 0){
+      res.status(200).json(postbycategory)
+    } else {
+      res.status(401).send({message: "Data data doesn't exist"})
+    }
+  } catch (err) {
+    res.status(500).json(err)
+  }
+});
+
 export default Post;
