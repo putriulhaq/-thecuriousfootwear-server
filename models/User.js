@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 import inc from 'mongoose-sequence';
 const autoIncrement = inc(mongoose);
@@ -42,7 +43,7 @@ const userSchema = new mongoose.Schema({
     default: 0
   },
   followedUsers: {
-    type: [Number]
+    type: [String]
   },
 });
 
