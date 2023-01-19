@@ -73,7 +73,7 @@ User.put("/profil/edit/:id", async (req, res) => {
   });
 });
 
-User.put("/follow/:userId", async (req, res, next) => {
+User.put("/follow/:userId", authMiddleware, async (req, res, next) => {
   try {
     await User.findByIdAndUpdate(req.user.id, {
       $push: { followedUsers: req.params.userId },

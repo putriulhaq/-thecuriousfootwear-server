@@ -42,7 +42,7 @@ Post.get("/all", async (req, res) => {
       dislike: data.dislike,
       category: data.category,
       purchase_date: data.purchase_date,
-      view:data.view
+      view: data.view
     };
   });
   res.send(allPosts);
