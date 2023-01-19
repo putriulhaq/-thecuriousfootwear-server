@@ -5,7 +5,7 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 import _ from "lodash";
 
 Com.get("/all", async (req, res) => {
-  const dataComment = await comment.find();
+  const dataComment = await comment.find().sort({ createdAt: -1 });;
   const data = dataComment.map((d) => {
     return {
       id: d.id,
