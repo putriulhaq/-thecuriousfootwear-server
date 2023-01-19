@@ -92,19 +92,26 @@ Post.put("/edit/:id", authMiddleware, async (req, res) => {
   }
 });
 
-Post.delete("/:id", authMiddleware, async (req, res) => {
+Post.delete("/:id", async (req, res) => {
+  // try {
+  //   const post = await Posts.findById(req.params.id);
+  //   if (post.userId == req.user.userId) {
+  //     try {
+  //       await post.delete();
+  //       res.status(200).json("Post has been deleted");
+  //     } catch (err) {
+  //       res.status(500).json(err);
+  //     }
+  //   } else {
+  //     res.status(401).json("You can delete only your post!");
+  //   }
+  // } catch (err) {
+  //   res.status(500).json(err);
+  // }
+  const post = await Posts.findById(req.params.id);
   try {
-    const post = await Posts.findById(req.params.id);
-    if (post.userId == req.user.userId) {
-      try {
-        await post.delete();
-        res.status(200).json("Post has been deleted");
-      } catch (err) {
-        res.status(500).json(err);
-      }
-    } else {
-      res.status(401).json("You can delete only your post!");
-    }
+    await post.delete();
+    res.status(200).json("Post has been deleted");
   } catch (err) {
     res.status(500).json(err);
   }
