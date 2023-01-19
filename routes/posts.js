@@ -136,7 +136,7 @@ Post.get("/category/:category", async (req, res) => {
   try {
     const cat = req.params.category
     const postbycategory = await Posts.find({category: cat});
-    if(postbycategory > 0){
+    if(postbycategory){
       res.status(200).json(postbycategory)
     } else {
       res.status(401).send({message: "Data data doesn't exist"})
