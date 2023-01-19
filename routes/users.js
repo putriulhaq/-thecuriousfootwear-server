@@ -1,5 +1,6 @@
 import express from "express";
 const User = express.Router();
+import { ObjectId } from "mongoose";
 import Post from "../models/post.js";
 import Users from "../models/User.js";
 import comment from "../models/comment.js";
@@ -36,19 +37,19 @@ User.put("/dislike/:postId", authMiddleware, async (req, res) => {
 User.get("/profil/:Id", async (req, res) => {
   const { Id } = req.params;
   const dataProfil = await Users.find({ userId: Id });
-  const data = dataProfil.map((data) => {
-    return {
-      userId: data.userId,
-      first_name: data.first_name,
-      last_name: data.last_name,
-      username: data.username,
-      email: data.email,
-      phone_number: data.phone_number,
-      about: data.about,
-      image: data.image,
-    };
-  });
-  res.json(data);
+  // const data = dataProfil.map((data) => {
+  //   return {
+  //     userId: data.userId,
+  //     first_name: data.first_name,
+  //     last_name: data.last_name,
+  //     username: data.username,
+  //     email: data.email,
+  //     phone_number: data.phone_number,
+  //     about: data.about,
+  //     image: data.image,
+  //   };
+  // });
+  res.json(dataProfil);
 });
 
 User.put("/profil/edit/:id", async (req, res) => {
@@ -73,12 +74,17 @@ User.put("/profil/edit/:id", async (req, res) => {
   });
 });
 
-User.put("/follow/:userId", authMiddleware, async (req, res, next) => {
+User.put("/follow", authMiddleware, async (req, res, next) => {
+  // const paramsId = req.params.userId
+  // // const reqId = req.user.userId
+  // const reqId = req.user.userId
+  // console.log(paramsId , '=' , typeof(paramsId))
+  // console.log(reqId , '=' , typeof(reqId))
   try {
-    await User.findByIdAndUpdate(req.user.id, {
-      $push: { followedUsers: req.params.userId },
+    await Users.findByIdAndUpdate(1, {
+      $push: { followedUsers: 2},
     });
-    await User.findByIdAndUpdate(req.params.userId, {
+    await Users.findByIdAndUpdate(req.params.userId, {
       $inc: { follower: 1 },
     });
     res.status(200).json("Follow is successfull!");
