@@ -92,29 +92,29 @@ Post.put("/edit/:id", authMiddleware, async (req, res) => {
   }
 });
 
-Post.delete("/:id", async (req, res) => {
-  // try {
-  //   const post = await Posts.findById(req.params.id);
-  //   if (post.userId == req.user.userId) {
-  //     try {
-  //       await post.delete();
-  //       res.status(200).json("Post has been deleted");
-  //     } catch (err) {
-  //       res.status(500).json(err);
-  //     }
-  //   } else {
-  //     res.status(401).json("You can delete only your post!");
-  //   }
-  // } catch (err) {
-  //   res.status(500).json(err);
-  // }
-  const post = await Posts.findById(req.params.id);
+Post.delete("/:id", authMiddleware, async (req, res) => {
   try {
-    await post.delete();
-    res.status(200).json("Post has been deleted");
+    const post = await Posts.findById(req.params.id);
+    if (post.userId == req.user.userId) {
+      try {
+        await post.delete();
+        res.status(200).json("Post has been deleted");
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    } else {
+      res.status(401).json("You can delete only your post!");
+    }
   } catch (err) {
     res.status(500).json(err);
   }
+  // const post = await Posts.findById(req.params.id);
+  // try {
+  //   await post.delete();
+  //   res.status(200).json("Post has been deleted");
+  // } catch (err) {
+  //   res.status(500).json(err);
+  // }
 });
 
 Post.get("/user/:user", async (req, res) => {
@@ -142,11 +142,11 @@ Post.put("/view/:idPost", async (req, res, next) => {
 Post.get("/category/:category", async (req, res) => {
   try {
     const cat = req.params.category
-    const postbycategory = await Posts.find({category: cat});
-    if(postbycategory){
+    const postbycategory = await Posts.find({ category: cat });
+    if (postbycategory) {
       res.status(200).json(postbycategory)
     } else {
-      res.status(401).send({message: "Data data doesn't exist"})
+      res.status(401).send({ message: "Data data doesn't exist" })
     }
   } catch (err) {
     res.status(500).json(err)
