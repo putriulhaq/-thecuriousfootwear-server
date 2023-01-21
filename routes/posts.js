@@ -30,7 +30,7 @@ Post.get("/all", async (req, res) => {
   const dataPosts = await Posts.aggregate([{ $sample: { size: 40 } }]);
   const allPosts = dataPosts.map((data) => {
     return {
-      id: data.id,
+      id: data._id,
       userId: data.userId,
       title: data.title,
       description: data.description,
