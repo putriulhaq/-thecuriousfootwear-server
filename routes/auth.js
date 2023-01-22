@@ -33,6 +33,8 @@ User.post("/signup", async (req, res) => {
               email: result.email,
               phone_number: result.phone_number,
               about: result.about,
+              followedUsers: result.followedUsers,
+              follower: result.follower,
               token,
             });
           } else {
