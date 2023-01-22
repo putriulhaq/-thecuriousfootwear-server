@@ -96,7 +96,7 @@ User.put("/follow/:userId", authMiddleware, async (req, res, next) => {
         },
         { new: true }
       );
-      res.status(200).json("Follow is successfull!");
+      res.status(200).json(req.params.userId);
     }
   } catch (error) {
     next(error);
@@ -118,7 +118,7 @@ User.put("/unfollow/:userId", authMiddleware, async (req, res, next) => {
     await Users.findByIdAndUpdate(req.params.userId, {
       $inc: { follower: -1 },
     });
-    res.status(200).json("Unfollow is successfull!");
+    res.status(200).json(req.params.userId);
   } catch (error) {
     next(error);
   }
