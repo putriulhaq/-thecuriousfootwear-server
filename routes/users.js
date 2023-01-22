@@ -75,27 +75,75 @@ User.put("/profil/edit/:id", async (req, res) => {
 
 User.put("/follow/:userId", authMiddleware, async (req, res, next) => {
   try {
-    await Users.findByIdAndUpdate(req.user.id, {
-      $push: { followedUsers: req.params.userId },
-    });
-    await Users.findByIdAndUpdate(req.params.userId, {
-      $inc: { follower: 1 },
-    });
-    res.status(200).json("Follow is successfull!");
+    const userId = (await Users.find({ userId: req.user.userId })).map(
+      (data) => data._id
+    );
+    const dataFollowed = await Users.find({ _id: userId });
+    if (dataFollowed[0].followedUsers.includes(req.params.userId)){
+      res.status(409).send({ message: "you have been followed" });
+    } else {
+      await Users.findByIdAndUpdate(
+        userId,
+        {
+          $push: { followedUsers: req.params.userId },
+        },
+        { new: true }
+      );
+      await Users.findByIdAndUpdate(
+        req.params.userId,
+        {
+          $inc: { follower: 1 },
+        },
+        { new: true }
+      );
+      res.status(200).json("Follow is successfull!");
+    }
   } catch (error) {
     next(error);
   }
 });
 
-User.put("/unfollow/:userId", async (req, res, next) => {
+User.put("/unfollow/:userId", authMiddleware, async (req, res, next) => {
   try {
-    await User.findByIdAndUpdate(req.user.id, {
-      $pull: { followedUsers: req.params.userId },
-    });
-    await User.findByIdAndUpdate(req.params.userId, {
+    const userId = (await Users.find({ userId: req.user.userId })).map(
+      (data) => data._id
+    );
+    await Users.findByIdAndUpdate(
+      userId,
+      {
+        $pull: { followedUsers: req.params.userId },
+      },
+      { new: true }
+    );
+    await Users.findByIdAndUpdate(req.params.userId, {
       $inc: { follower: -1 },
     });
     res.status(200).json("Unfollow is successfull!");
+  } catch (error) {
+    next(error);
+  }
+});
+
+User.get("/follower/:id", authMiddleware, async (req, res, next) => {
+  try {
+    const dataU = await Users.find({ _id: req.params.id });
+    if (dataU[0].follower < 0) {
+      const follow = dataU.map((data) => {
+        return {
+          followed: data.followedUsers.length,
+          follower: 0,
+        };
+      });
+      res.status(200).send(follow);
+    } else {
+      const follow = dataU.map((data) => {
+        return {
+          followed: data.followedUsers.length,
+          follower: data.follower,
+        };
+      });
+      res.status(200).send(follow);
+    }
   } catch (error) {
     next(error);
   }
