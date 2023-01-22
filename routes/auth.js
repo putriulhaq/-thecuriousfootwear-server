@@ -33,8 +33,6 @@ User.post("/signup", async (req, res) => {
               email: result.email,
               phone_number: result.phone_number,
               about: result.about,
-              followedUsers: result.followedUsers,
-              follower: result.follower,
               token,
             });
           } else {
@@ -67,6 +65,8 @@ User.post("/login", async (req, res) => {
           username: user.username,
           email: user.email,
           userId: user.userId,
+          followedUsers: result.followedUsers,
+          follower: result.follower,
           token,
         });
       } else {
