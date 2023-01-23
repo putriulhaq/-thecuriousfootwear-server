@@ -51,22 +51,6 @@ Post.get("/all", async (req, res) => {
   res.send(allPosts);
 });
 
-Post.get("/following/:id", async (req, res) => {
-  const userId = req.params.id;
-  console.log(userId)
-  const user = await User.findById(userId);
-  // const followedUsers = user.followedUsers;
-  // console.log(followedUsers)
-
-  // const postList = await Promise.all(
-  //   followedUsers.map(async (ownerId) => {
-  //     return await Post.find({ userId: ownerId });
-  //   })
-  // );
-
-  // res.status(200).json(postList.flat().sort((a, b) => b.createdAt - a.createdAt))
-  res.status(200).json(user)
-});
 
 Post.get("/popular", async (req, res) => {
   try {
