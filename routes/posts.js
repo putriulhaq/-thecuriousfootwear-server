@@ -2,6 +2,7 @@ import express from "express";
 const Post = express.Router();
 const User = express.Router();
 import Posts from "../models/post.js";
+import Users from "../models/User.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 Post.post("/", authMiddleware, async (req, res) => {
