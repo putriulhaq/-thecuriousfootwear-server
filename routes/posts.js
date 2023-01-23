@@ -53,8 +53,8 @@ Post.get("/all", async (req, res) => {
 Post.get("/following/:id", async (req, res) => {
   const userId = req.params.id;
   console.log(userId)
-  const user = await User.findById(userId);
-  const followedUsers = user.followedUsers;
+  // const user = await User.findById(userId);
+  // const followedUsers = user.followedUsers;
   // console.log(followedUsers)
 
   // const postList = await Promise.all(
