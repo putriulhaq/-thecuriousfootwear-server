@@ -36,19 +36,19 @@ User.put("/dislike/:postId", authMiddleware, async (req, res) => {
 User.get("/profil/:Id", async (req, res) => {
   const { Id } = req.params;
   const dataProfil = await Users.find({ userId: Id });
-  const data = dataProfil.map((data) => {
-    return {
-      userId: data.userId,
-      first_name: data.first_name,
-      last_name: data.last_name,
-      username: data.username,
-      email: data.email,
-      phone_number: data.phone_number,
-      about: data.about,
-      image: data.image,
-    };
-  });
-  res.json(data);
+  // const data = dataProfil.map((data) => {
+  //   return {
+  //     userId: data.userId,
+  //     first_name: data.first_name,
+  //     last_name: data.last_name,
+  //     username: data.username,
+  //     email: data.email,
+  //     phone_number: data.phone_number,
+  //     about: data.about,
+  //     image: data.image,
+  //   };
+  // });
+  res.json(dataProfil);
 });
 
 User.put("/profil/edit/:id", async (req, res) => {
@@ -79,7 +79,7 @@ User.put("/follow/:userId", authMiddleware, async (req, res, next) => {
       (data) => data._id
     );
     const dataFollowed = await Users.find({ _id: userId });
-    if (dataFollowed[0].followedUsers.includes(req.params.userId)){
+    if (dataFollowed[0].followedUsers.includes(req.params.userId)) {
       res.status(409).send({ message: "you have been followed" });
     } else {
       await Users.findByIdAndUpdate(
@@ -96,7 +96,7 @@ User.put("/follow/:userId", authMiddleware, async (req, res, next) => {
         },
         { new: true }
       );
-      res.status(200).json("Follow is successfull!");
+      res.status(200).json(req.params.userId);
     }
   } catch (error) {
     next(error);
@@ -118,7 +118,7 @@ User.put("/unfollow/:userId", authMiddleware, async (req, res, next) => {
     await Users.findByIdAndUpdate(req.params.userId, {
       $inc: { follower: -1 },
     });
-    res.status(200).json("Unfollow is successfull!");
+    res.status(200).json(req.params.userId);
   } catch (error) {
     next(error);
   }

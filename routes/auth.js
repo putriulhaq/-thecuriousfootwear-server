@@ -65,6 +65,8 @@ User.post("/login", async (req, res) => {
           username: user.username,
           email: user.email,
           userId: user.userId,
+          followedUsers: user.followedUsers,
+          follower: user.follower,
           token,
         });
       } else {
