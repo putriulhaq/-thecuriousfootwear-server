@@ -154,4 +154,23 @@ Post.get("/category/:category", async (req, res) => {
   }
 });
 
+Post.get("/following/:id", async (req, res) => {
+  const userId = req.params.id;
+  const user = await Users.findById(userId);
+  const followedUsers = user.followedUsers;
+  const userList = await Promise.all(
+    followedUsers.map(async (ownerId) => {
+      const followedUser = Users.findById(ownerId)
+      return await followedUser
+    })
+  );
+  let result = userList.map(a => a.userId);
+  const postList = await Promise.all(
+    result.map(async (ownerId) => {
+      return await Posts.find({ userId: ownerId });
+    })
+  );
+  res.status(200).json(postList.flat().sort((a, b) => b.createdAt - a.createdAt))
+});
+
 export default Post;
