@@ -123,7 +123,7 @@ Post.delete("/:id", authMiddleware, async (req, res) => {
 
 Post.get("/user/:user", async (req, res) => {
   const { user } = req.params;
-  const dataPosts = await Posts.find({ userId: user });
+  const dataPosts = await Posts.find({ userId: user }).sort({ createdAt: -1 });
   try {
     res.status(200).json(dataPosts);
   } catch (err) {
