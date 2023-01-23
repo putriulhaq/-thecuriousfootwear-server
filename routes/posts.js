@@ -53,8 +53,8 @@ Post.get("/all", async (req, res) => {
 Post.get("/following/:id", async (req, res) => {
   const userId = req.params.id;
   console.log(userId)
-  // const user = await User.findById(userId);
-  // const followedUsers = user.followedUsers;
+  const user = await User.findById(userId);
+  const followedUsers = user.followedUsers;
   // console.log(followedUsers)
 
   // const postList = await Promise.all(
@@ -64,7 +64,7 @@ Post.get("/following/:id", async (req, res) => {
   // );
 
   // res.status(200).json(postList.flat().sort((a, b) => b.createdAt - a.createdAt))
-  res.status(200).json(userId)
+  res.status(200).json(followedUsers)
 });
 
 Post.get("/popular", async (req, res) => {
