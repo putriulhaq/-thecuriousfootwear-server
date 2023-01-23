@@ -64,6 +64,7 @@ Post.get("/following/:id", async (req, res) => {
   // );
 
   // res.status(200).json(postList.flat().sort((a, b) => b.createdAt - a.createdAt))
+  res.status(200).json(userId)
 });
 
 Post.get("/popular", async (req, res) => {
