@@ -124,7 +124,7 @@ User.put("/unfollow/:userId", authMiddleware, async (req, res, next) => {
   }
 });
 
-User.get("/follower/:id", authMiddleware, async (req, res, next) => {
+User.get("/follower/:id", async (req, res, next) => {
   try {
     const dataU = await Users.find({ _id: req.params.id });
     if (dataU[0].follower < 0) {
