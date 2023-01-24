@@ -130,7 +130,7 @@ User.get("/follower/:id", async (req, res, next) => {
     if (dataU[0].follower < 0) {
       const follow = dataU.map((data) => {
         return {
-          followed: data.followedUsers.length,
+          following: data.followedUsers.length,
           follower: 0,
         };
       });
@@ -138,7 +138,7 @@ User.get("/follower/:id", async (req, res, next) => {
     } else {
       const follow = dataU.map((data) => {
         return {
-          followed: data.followedUsers.length,
+          following: data.followedUsers.length,
           follower: data.follower,
         };
       });
